@@ -25,7 +25,7 @@ export function API({ stack }: StackContext) {
   });
 
   const web = new StaticSite(stack, "web", {
-    path: "/packages/web",
+    path: "packages/web",
     buildOutput: "dist",
     buildCommand: "npm run build",
     environment: {

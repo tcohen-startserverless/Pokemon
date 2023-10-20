@@ -24,15 +24,16 @@ function App() {
         </li>
       </ul>
       {path == "search" ? (
-        <Pagination offset={offset}></Pagination>
+        <div>
+          <Pagination offset={offset}></Pagination>
+          <button disabled={offset <= 0} onClick={() => handleClick(-20)}>
+            Prev Page
+          </button>
+          <button onClick={() => handleClick(20)}>Next Page</button>
+        </div>
       ) : (
         <Inventory></Inventory>
       )}
-
-      <button disabled={offset <= 0} onClick={() => handleClick(-20)}>
-        Prev Page
-      </button>
-      <button onClick={() => handleClick(20)}>Next Page</button>
     </>
   );
 }
