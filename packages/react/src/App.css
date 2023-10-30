@@ -23,7 +23,7 @@
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-evenly;
-	margin: 20px;
+	margin: 60px;
 	min-height: 450px;
 	min-width: 150px;
 	background-color: grey;
@@ -33,4 +33,10 @@
 
 .subline {
 	align-self: flex-start;
+}
+
+.paginate {
+	margin: 60px;
+	display: flex;
+	align-items: center;
 }

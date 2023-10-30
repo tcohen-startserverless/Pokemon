@@ -6,8 +6,6 @@ const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
 
 export const handler = ApiHandler(async (_evt) => {
-  console.log(process.env.TABLE);
-
   const command = new QueryCommand({
     TableName: process.env.TABLE,
     KeyConditionExpression: `#pk = :id`,
@@ -20,11 +18,42 @@ export const handler = ApiHandler(async (_evt) => {
   });
 
   const response = await docClient.send(command);
-  //   console.log(response.Items);
-  const pokemon = response.Items;
+  console.log(response);
+
+  const body = {
+    items: response.Items,
+    key: response.LastEvaluatedKey,
+  };
 
   return {
     statusCode: 200,
-    body: JSON.stringify(pokemon),
+    body: JSON.stringify(body),
+  };
+});
+
+export const paginate = ApiHandler(async (_evt) => {
+  const command = new QueryCommand({
+    TableName: process.env.TABLE,
+    KeyConditionExpression: `#pk = :id`,
+    ExpressionAttributeNames: {
+      "#pk": "pk",
+    },
+    ExpressionAttributeValues: {
+      ":id": "pokemon",
+    },
+    Limit: 50,
+  });
+
+  const response = await docClient.send(command);
+  console.log(response);
+
+  const body = {
+    items: response.Items,
+    key: response.LastEvaluatedKey,
+  };
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(body),
   };
 });

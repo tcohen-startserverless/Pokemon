@@ -16,6 +16,7 @@ export const create = ApiHandler(async (_evt) => {
     moves: body.moves,
     abilities: body.abilities,
     sprites: body.sprites,
+    types: body.types,
     id: body.id,
   };
 

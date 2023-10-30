@@ -20,16 +20,17 @@ export function API({ stack }: StackContext) {
     },
     routes: {
       "GET /pokemon": "packages/functions/src/lambda.handler",
+      //   "GET /pokemon{id}": "packages/functions/src/lambda.paginate",
       "POST /pokemon": "packages/functions/src/pokemon.create",
     },
   });
 
   const web = new StaticSite(stack, "web", {
-    path: "packages/web",
+    path: "packages/react",
     buildOutput: "dist",
     buildCommand: "npm run build",
     environment: {
-      VITE_APP_TEST: api.url,
+      VITE_APP_API_URL: api.url,
     },
   });
 
