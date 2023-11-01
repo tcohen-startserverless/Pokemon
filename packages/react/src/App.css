@@ -13,6 +13,11 @@
 	margin: 10px;
 }
 
+a.nav-link {
+	text-decoration: none;
+	color: black;
+}
+
 .page {
 	display: flex;
 	flex-wrap: wrap;

@@ -1,4 +1,10 @@
 import { useEffect, useState } from "react";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Route,
+  Link,
+} from "react-router-dom";
 import "./App.css";
 
 interface Entry {
@@ -38,15 +44,18 @@ function getLocalStorage<T>(key: string): T | null {
 }
 
 function App() {
-  const [offset, setPage] = useState(0);
-  const [path, setPath] = useState<"search" | "inventory">("search");
   const [entries, setEntries] = useState<Entry[]>([]);
   const [pagePokemon, setPagePokemon] = useState<Pokemon[]>([]);
   const [inventory, setInventory] = useState<Pokemon[]>([]);
   const [key, setKey] = useState<String>("");
+  const [offset, setPage] = useState(0);
   const api = `${import.meta.env.VITE_APP_API_URL}/pokemon`;
 
   useEffect(() => {
+    const storedData = getLocalStorage<Pokemon[]>("page");
+    if (storedData && storedData !== inventory) {
+      setInventory(storedData);
+    }
     fetch(`https://pokeapi.co/api/v2/pokemon/?offset=${offset}`)
       .then((response) => {
         if (!response.ok) {
@@ -56,6 +65,7 @@ function App() {
       })
       .then((data) => {
         setEntries(data.results);
+        setLocalStorage("page", pagePokemon);
       });
   }, [offset]);
 
@@ -96,7 +106,6 @@ function App() {
         return response.json();
       })
       .then((data) => {
-        console.log(`Length of inventory ${inventory.length}`);
         setInventory(data.items);
         setKey(data.key);
       });
@@ -113,10 +122,6 @@ function App() {
     setPage(offset + count);
   };
 
-  const handleNav = (nav: "search" | "inventory") => {
-    setPath(nav);
-  };
-
   const handleCatch = (data: Pokemon) => {
     fetch(api, {
       method: "POST",
@@ -126,14 +131,58 @@ function App() {
     setInventory([...inventory, data]);
   };
 
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: (
+        <Pagination
+          pokeList={pagePokemon}
+          handleCatch={handleCatch}
+          handlePage={handlePage}
+          offset={offset}
+        ></Pagination>
+      ),
+    },
+    {
+      path: "/inventory",
+      element: (
+        <Pagination
+          pokeList={inventory}
+          handlePage={handlePage}
+          offset={offset}
+        ></Pagination>
+      ),
+    },
+  ]);
+
+  return (
+    <>
+      <RouterProvider router={router}></RouterProvider>
+    </>
+  );
+}
+
+interface PaginationProps {
+  pokeList: Pokemon[] | null;
+  handleCatch?: (data: Pokemon) => void;
+  handlePage: (count: number) => void;
+  offset: number;
+}
+
+function Pagination(props: PaginationProps) {
+  const { pokeList, handleCatch, handlePage, offset } = props;
   return (
     <>
       <ul className="nav">
-        <li className="nav-item" onClick={() => handleNav("search")}>
-          Search
+        <li className="nav-item">
+          <a className="nav-link" href="/">
+            Search
+          </a>
         </li>
-        <li className="nav-item" onClick={() => handleNav("inventory")}>
-          Inventory
+        <li className="nav-item">
+          <a className="nav-link" href="/inventory">
+            Inventory
+          </a>
         </li>
       </ul>
 
@@ -149,29 +198,6 @@ function App() {
           Next Page
         </button>
       </div>
-      {path == "search" ? (
-        <div>
-          <Pagination
-            pokeList={pagePokemon}
-            handleCatch={handleCatch}
-          ></Pagination>
-        </div>
-      ) : (
-        <Pagination pokeList={inventory}></Pagination>
-      )}
-    </>
-  );
-}
-
-interface PaginationProps {
-  pokeList: Pokemon[] | null;
-  handleCatch?: (data: Pokemon) => void;
-}
-
-function Pagination(props: PaginationProps) {
-  const { pokeList, handleCatch } = props;
-  return (
-    <>
       <div className="page">
         {pokeList ? (
           pokeList.map((entry) => (

@@ -16,11 +16,12 @@ export function API({ stack }: StackContext) {
         environment: {
           TABLE: table.tableName,
         },
+        timeout: 30,
       },
     },
     routes: {
       "GET /pokemon": "packages/functions/src/lambda.handler",
-      //   "GET /pokemon{id}": "packages/functions/src/lambda.paginate",
+      "GET /pokemon/{id}": "packages/functions/src/lambda.handler",
       "POST /pokemon": "packages/functions/src/pokemon.create",
     },
   });

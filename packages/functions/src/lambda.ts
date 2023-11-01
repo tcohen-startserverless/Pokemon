@@ -15,37 +15,16 @@ export const handler = ApiHandler(async (_evt) => {
     ExpressionAttributeValues: {
       ":id": "pokemon",
     },
-  });
-
-  const response = await docClient.send(command);
-  console.log(response);
-
-  const body = {
-    items: response.Items,
-    key: response.LastEvaluatedKey,
-  };
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify(body),
-  };
-});
-
-export const paginate = ApiHandler(async (_evt) => {
-  const command = new QueryCommand({
-    TableName: process.env.TABLE,
-    KeyConditionExpression: `#pk = :id`,
-    ExpressionAttributeNames: {
-      "#pk": "pk",
-    },
-    ExpressionAttributeValues: {
-      ":id": "pokemon",
-    },
+    ExclusiveStartKey: _evt.queryStringParameters
+      ? {
+          pk: "pokemon",
+          sk: _evt.queryStringParameters.id!,
+        }
+      : undefined,
     Limit: 50,
   });
 
   const response = await docClient.send(command);
-  console.log(response);
 
   const body = {
     items: response.Items,
