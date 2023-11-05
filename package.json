@@ -1,28 +1,34 @@
 {
-  "name": "pokemon-app",
-  "version": "0.0.0",
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "dev": "sst dev",
-    "build": "sst build",
-    "deploy": "sst deploy",
-    "remove": "sst remove",
-    "console": "sst console",
-    "typecheck": "tsc --noEmit"
-  },
-  "devDependencies": {
-    "@tsconfig/node18": "^18.2.2",
-    "aws-cdk-lib": "2.95.1",
-    "constructs": "10.2.69",
-    "sst": "^2.30.3",
-    "typescript": "^5.2.2"
-  },
-  "workspaces": [
-    "packages/*"
-  ],
-  "dependencies": {
-    "@aws-sdk/client-dynamodb": "^3.431.0",
-    "@aws-sdk/lib-dynamodb": "^3.431.0"
-  }
+	"name": "pokemon-app",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "sst dev",
+		"build": "sst build",
+		"deploy": "sst deploy",
+		"remove": "sst remove",
+		"console": "sst console",
+		"typecheck": "tsc --noEmit"
+	},
+	"devDependencies": {
+		"@graphql-codegen/cli": "^5.0.0",
+		"@graphql-codegen/typescript": "^4.0.1",
+		"@tsconfig/node18": "^18.2.2",
+		"@types/aws-lambda": "^8.10.125",
+		"aws-cdk-lib": "2.95.1",
+		"constructs": "10.2.69",
+		"sst": "^2.30.3",
+		"typescript": "^5.2.2"
+	},
+	"workspaces": [
+		"packages/*"
+	],
+	"dependencies": {
+		"@aws-appsync/utils": "^1.5.0",
+		"@aws-sdk/client-dynamodb": "^3.431.0",
+		"@aws-sdk/lib-dynamodb": "^3.431.0",
+		"@graphql-tools/merge": "^9.0.0",
+		"graphql": "^16.8.1"
+	}
 }

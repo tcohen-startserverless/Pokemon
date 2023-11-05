@@ -4,5 +4,11 @@
   "compilerOptions": {
     "module": "esnext",
     "moduleResolution": "node"
+  },
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "noEmit": true,
+    "moduleResolution": "node"
   }
 }

@@ -1,0 +1,71 @@
+input PokemonInput {
+  id: Int!
+  name: String!
+  height: Int
+  weight: Int
+  types: [TypesInput]
+  abilities: [AbilitiesInput]
+  sprites: SpritesInput
+}
+
+type Pokemon {
+  id: Int!
+  name: String!
+  height: Int
+  weight: Int
+  types: [Types]
+  abilities: [Abilities]
+  sprites: Sprites
+}
+
+type Type {
+  name: String!
+  url: String!
+}
+
+type Types {
+  type: [Type]
+}
+
+type Ability {
+  name: String
+  url: String
+}
+
+type Abilities {
+  ability: [Ability]
+}
+
+type Sprites {
+  front_default: String
+}
+
+input TypeInput {
+  name: String!
+  url: String!
+}
+
+input TypesInput {
+  type: [TypeInput]
+}
+
+input AbilityInput {
+  name: String
+  url: String
+}
+
+input AbilitiesInput {
+  ability: [AbilityInput]
+}
+
+input SpritesInput {
+  front_default: String
+}
+
+type Query {
+  getPokemon: [Pokemon]
+}
+
+type Mutation {
+  catchPokemon(input: PokemonInput): Pokemon
+}
